@@ -1,11 +1,17 @@
 package org.utm.lab1;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 
-public class University {
 
-    private List<Faculty> faculties;
+public class University implements Serializable {
+    private static final long serialVersionUID = 1L; // Add a serialVersionUID
+
+    private transient List<Faculty> faculties;
 
     public University() {
         faculties = new ArrayList<>();
@@ -88,7 +94,14 @@ public class University {
         }
     }
 
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject(); // Perform default serialization
+        out.writeObject(new ArrayList<>(faculties)); // Serialize faculties as a new ArrayList
+    }
 
-
-
+    // Implement custom deserialization
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject(); // Perform default deserialization
+        faculties = (List<Faculty>) in.readObject(); // Read faculties as an ArrayList
+    }
 }
