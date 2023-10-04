@@ -9,7 +9,8 @@ import java.io.IOException;
 
 
 public class University implements Serializable {
-    private static final long serialVersionUID = 1L; // Add a serialVersionUID
+
+    private static final long serialVersionUID = 1L;
 
     private transient List<Faculty> faculties;
 
@@ -18,12 +19,14 @@ public class University implements Serializable {
     }
 
     public void createFaculty(String facultyName, String facultyAbbreviation, StudyField field) {
+
         Faculty newFaculty = new Faculty(facultyAbbreviation, field);
         faculties.add(newFaculty);
     }
 
 
     public Faculty findFacultyForStudent(String uniqueIdentifier) {
+
         for (Faculty faculty : faculties) {
             for (Student student : faculty.getStudents()) {
 
@@ -58,9 +61,11 @@ public class University implements Serializable {
     }
 
     public Faculty findFacultyByAbbreviation(String abbreviation) {
+
         if (abbreviation != null) {
             for (Faculty faculty : faculties) {
                 if (faculty.getAbbreviation().equals(abbreviation)) {
+
                     return faculty;
                 }
             }
@@ -77,6 +82,7 @@ public class University implements Serializable {
             Student studentToGraduate = null;
             for (Student student : faculty.getStudents()) {
                 if (student.getUniqueId().equals(studentUniqueId)) {
+
                     studentToGraduate = student;
                     break;
                 }
@@ -87,21 +93,25 @@ public class University implements Serializable {
                 faculty.graduateStudent(studentToGraduate);
                 System.out.println("Student" + studentToGraduate.getFirstName() + " " + studentToGraduate.getLastName() + " graduated from " + faculty.getAbbreviation() + " faculty.");
             } else {
+
                 System.out.println("Student not found in the specified faculty.");
             }
         } else {
+
             System.out.println("Faculty not found.");
         }
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject(); // Perform default serialization
-        out.writeObject(new ArrayList<>(faculties)); // Serialize faculties as a new ArrayList
+
+        out.defaultWriteObject();
+        out.writeObject(new ArrayList<>(faculties));
     }
 
-    // Implement custom deserialization
+
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject(); // Perform default deserialization
-        faculties = (List<Faculty>) in.readObject(); // Read faculties as an ArrayList
+
+        in.defaultReadObject();
+        faculties = (List<Faculty>) in.readObject();
     }
 }
