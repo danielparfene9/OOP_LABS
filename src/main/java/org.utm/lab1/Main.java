@@ -2,13 +2,16 @@ package org.utm.lab1;
 
 import java.util.Scanner;
 import java.util.Date;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         University university = new University();
+        SaveManager saveManager = new SaveManager();
 
         System.out.println("Welcome to TUM's student management system!");
+        university = saveManager.loadUniversity();
 
         while (true) {
             System.out.println("What would you like to do?");
@@ -20,6 +23,7 @@ public class Main {
             String choice = scanner.nextLine();
 
             if (choice.equals("q")) {
+                saveManager.saveUniversity(university);
                 break;
             } else if (choice.equals("g")) {
                 while (true) {

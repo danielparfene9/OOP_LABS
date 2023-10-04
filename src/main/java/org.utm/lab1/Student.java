@@ -1,8 +1,10 @@
 package org.utm.lab1;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Student {
+public class Student implements Serializable {
+    private static final long serialVersionUID = 1L; // Add a serialVersionUID
 
     private String firstName;
     private String lastName;
@@ -12,14 +14,12 @@ public class Student {
     private String uniqueId;
 
     public Student(String firstName, String lastName, String email, Date enrollmentDate, Date dateOfBirth, String uniqueId) {
-
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.enrollmentDate = enrollmentDate;
         this.dateOfBirth = dateOfBirth;
         this.uniqueId = uniqueId;
-
     }
 
     public String getFirstName() {
@@ -38,4 +38,5 @@ public class Student {
         return uniqueId;
     }
 }
+
 

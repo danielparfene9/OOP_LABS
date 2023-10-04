@@ -2,8 +2,11 @@ package org.utm.lab1;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Faculty {
+
+public class Faculty implements Serializable {
+    private static final long serialVersionUID = 1L; // Add a serialVersionUID
 
     private String abbreviation;
     private List<Student> students;
@@ -11,17 +14,13 @@ public class Faculty {
     private List<Student> graduateStudents;
 
     public Faculty(String abbreviation, StudyField studyField) {
-
         this.abbreviation = abbreviation;
         this.studyField = studyField;
         this.students = new ArrayList<>();
         this.graduateStudents = new ArrayList<>();
-
-
     }
 
-    public void enrollStudent(Student student){
-
+    public void enrollStudent(Student student) {
         students.add(student);
     }
 
@@ -30,22 +29,18 @@ public class Faculty {
         graduateStudents.add(student);
     }
 
-    public List<Student> getGraduateStudents(){
-
+    public List<Student> getGraduateStudents() {
         return graduateStudents;
     }
 
-
-    public void displayCurrentStudents(){
-
+    public void displayCurrentStudents() {
         System.out.println("Currently Enrolled Students in " + abbreviation + ": ");
-        for (Student student : students){
+        for (Student student : students) {
             System.out.println(student.getFirstName() + " " + student.getLastName());
         }
     }
 
     public void displayGraduates(List<Student> allStudents) {
-
         System.out.println("Graduated Students from " + abbreviation + ":");
         for (Student student : allStudents) {
             if (!students.contains(student)) {
@@ -63,20 +58,16 @@ public class Faculty {
         return false;
     }
 
-
     public List<Student> getStudents() {
         return students;
     }
 
-    public String getAbbreviation(){
-
+    public String getAbbreviation() {
         return abbreviation;
     }
 
     public StudyField getStudyField() {
         return studyField;
     }
-
-
-
 }
+
