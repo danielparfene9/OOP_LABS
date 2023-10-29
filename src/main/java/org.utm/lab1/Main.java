@@ -3,7 +3,6 @@ package org.utm.lab1;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.Date;
-import java.io.*;
 import java.text.ParseException;
 
 public class Main {
@@ -15,6 +14,7 @@ public class Main {
         SaveManager saveManager = new SaveManager();
 
         System.out.println("Welcome to TUM's student management system!");
+        System.out.println(" ");
         university = saveManager.loadUniversity();
 
         while (true) {
@@ -37,6 +37,7 @@ public class Main {
                 while (true) {
 
                     // GENERAL OPERATIONS START HERE/////////////////////////////////////////////////////////////////////////////////
+                    System.out.println(" ");
 
                     System.out.println("General operations,");
                     System.out.println("What would you like to do?");
@@ -52,6 +53,8 @@ public class Main {
                         break;
 
                     } else if (generalChoice.startsWith("nf/")) {
+
+                        System.out.println(" ");
 
                         String[] parts = generalChoice.split("/");
 
@@ -70,6 +73,8 @@ public class Main {
                         }
 
                     } else if (generalChoice.startsWith("ss/")) {
+
+                        System.out.println(" ");
 
                         String[] parts = generalChoice.split("/");
 
@@ -91,10 +96,12 @@ public class Main {
                         }
 
                     } else if (generalChoice.equals("df/")) {
+                        System.out.println(" ");
 
                         university.displayFaculties();
 
                     } else if (generalChoice.startsWith("df/")) {
+                        System.out.println(" ");
 
                         String[] parts = generalChoice.split("/");
 
@@ -135,6 +142,8 @@ public class Main {
 
                     } else if (facultyChoice.startsWith("cfs/")) {
 
+                        System.out.println(" ");
+
                         String[] parts = facultyChoice.split("/");
 
                         if (parts.length == 8) {
@@ -173,6 +182,8 @@ public class Main {
 
                     } else if (facultyChoice.startsWith("gs/")) {
 
+                        System.out.println(" ");
+
                         String[] parts = facultyChoice.split("/");
 
                         if (parts.length == 2) {
@@ -197,6 +208,8 @@ public class Main {
 
                     } else if (facultyChoice.startsWith("dce/")) {
 
+                        System.out.println(" ");
+
                         String[] parts = facultyChoice.split("/");
 
                         if (parts.length == 2) {
@@ -217,6 +230,8 @@ public class Main {
                             System.out.println("Invalid input for displaying current enrolled students.");
                         }
                     } else if (facultyChoice.startsWith("dg/")) {
+
+                        System.out.println(" ");
 
                         String[] parts = facultyChoice.split("/");
 
@@ -239,6 +254,8 @@ public class Main {
                         }
 
                     } else if (facultyChoice.startsWith("sbf/")) {
+
+                        System.out.println(" ");
 
                         String[] parts = facultyChoice.split("/");
                         if (parts.length == 3) {
@@ -292,6 +309,8 @@ public class Main {
                         break;
                     } else if (studentChoice.startsWith("name/")) {
 
+                        System.out.println(" ");
+
                         String uniqueID = studentChoice.substring(5);
                         Faculty faculty = university.findFacultyForStudent(uniqueID);
 
@@ -311,6 +330,8 @@ public class Main {
                         }
 
                     } else if (studentChoice.startsWith("surname/")) {
+
+                        System.out.println(" ");
 
                         String uniqueID = studentChoice.substring(8);
                         Faculty faculty = university.findFacultyForStudent(uniqueID);
@@ -334,6 +355,8 @@ public class Main {
 
                     } else if (studentChoice.startsWith("enrollment/")) {
 
+                        System.out.println(" ");
+
 
                         String uniqueID = studentChoice.substring(11);
                         Faculty faculty = university.findFacultyForStudent(uniqueID);
@@ -351,6 +374,8 @@ public class Main {
                             System.out.println("Faculty not found for the student.");
                         }
                     } else if (studentChoice.startsWith("birth/")) {
+
+                        System.out.println(" ");
 
                         String uniqueID = studentChoice.substring(6);
                         Faculty faculty = university.findFacultyForStudent(uniqueID);
@@ -370,6 +395,8 @@ public class Main {
                             System.out.println("Faculty not found for the student.");
                         }
                     } else if (studentChoice.startsWith("email/")) {
+
+                        System.out.println(" ");
 
                         String uniqueID = studentChoice.substring(6);
                         Faculty faculty = university.findFacultyForStudent(uniqueID);
