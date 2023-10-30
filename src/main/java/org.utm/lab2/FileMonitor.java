@@ -1,22 +1,23 @@
 package org.utm.lab2;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class FileMonitor {
     private static Date snapshotTime;
     private static List<MyFile> files;
+    private static Timer timer;
 
     public static void main(String[] args) {
         snapshotTime = new Date();
         files = new ArrayList<>();
 
-        String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS";
+        String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS\\";
 
         populateFileList(folderLocation);
+
+        timer = new Timer();
+        timer.schedule(new FileUpdateTask(), 0, 60*1000);
 
         Scanner scanner = new Scanner(System.in);
 
@@ -31,23 +32,32 @@ public class FileMonitor {
             String choice = scanner.nextLine();
 
             if (choice.startsWith("commit")) {
+
                 snapshotTime = new Date();
                 System.out.println("Snapshot time updated to: " + snapshotTime);
                 updateFilesData();
+
             } else if (choice.startsWith("info")) {
                 String[] parts = choice.split(" ");
+
                 if (parts.length == 2) {
                     String filename = parts[1];
                     displayFileInfo(filename);
+
                 } else {
+
                     System.out.println("Invalid command. Usage: info <filename>");
                 }
             } else if (choice.equals("status")) {
+
                 displayFileStatus();
             } else if (choice.equals("exit")) {
+
                 System.out.println("Exiting the program.");
+                timer.cancel();
                 break;
             } else {
+
                 System.out.println("Invalid command. Please enter a valid option.");
             }
         }
@@ -56,11 +66,13 @@ public class FileMonitor {
     }
 
     private static void populateFileList(String folderLocation) {
+
         File folder = new File(folderLocation);
 
         if (!folder.exists() || !folder.isDirectory()) {
             System.out.println("Invalid folder location: " + folderLocation);
             return;
+
         }
 
         File[] filesInFolder = folder.listFiles();
@@ -86,7 +98,7 @@ public class FileMonitor {
         } else if (extension.equals("py") || extension.equals("java")) {
             return new ProgramFile(fileName);
         }
-        return null; // Unsupported file type
+        return null;
     }
 
     private static String getExtension(String fileName) {
@@ -99,7 +111,8 @@ public class FileMonitor {
 
     private static void updateFilesData() {
         for (MyFile file : files) {
-            // You can call common methods here
+            file.update();
+
         }
     }
 
@@ -119,5 +132,18 @@ public class FileMonitor {
             String status = file.hasChanged(snapshotTime) ? "Changed" : "No changes";
             System.out.println(file.getFileName() + " - " + status);
         }
+
     }
+
+    static class FileUpdateTask extends TimerTask {
+
+        @Override
+        public void run(){
+
+            System.out.println("\n Updating file timestamps...");
+            for (MyFile file : files) file.update();
+
+        }
+    }
+
 }

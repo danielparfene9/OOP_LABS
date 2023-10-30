@@ -1,10 +1,12 @@
 package org.utm.lab2;
 
-import java.io.*;
 import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 abstract class File implements MyFile {
     protected String fileName;
@@ -15,8 +17,8 @@ abstract class File implements MyFile {
     public File(String fileName) {
         this.fileName = fileName;
         this.extension = getExtension(fileName);
-        this.createdDate = new Date();
-        this.updatedDate = new Date();
+        this.createdDate = getCreationDate(fileName);
+        this.updatedDate = getModificationDate(fileName);
     }
 
     public void update() {
@@ -39,6 +41,31 @@ abstract class File implements MyFile {
         }
         return "";
     }
+
+    private Date getCreationDate(String fileName) {
+        Path path = FileSystems.getDefault().getPath(fileName);
+        try {
+            BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
+            FileTime creationTime = attributes.creationTime();
+            return new Date(creationTime.toMillis());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Date getModificationDate(String fileName) {
+        Path path = FileSystems.getDefault().getPath(fileName);
+        try {
+            BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
+            FileTime modificationTime = attributes.lastModifiedTime();
+            return new Date(modificationTime.toMillis());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
 
 class TextFile extends File {
