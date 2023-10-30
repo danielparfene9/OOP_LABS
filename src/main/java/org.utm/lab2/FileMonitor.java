@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class FileMonitor {
     private static Date snapshotTime;
-    private static List<File> files;
+    private static List<MyFile> files;
 
     public static void main(String[] args) {
         snapshotTime = new Date();
@@ -68,7 +68,7 @@ public class FileMonitor {
             for (File file : filesInFolder) {
                 if (file.isFile()) {
                     String fileName = file.getName();
-                    File fileObject = createFileObject(fileName);
+                    MyFile fileObject = createFileObject(fileName);
                     if (fileObject != null) {
                         files.add(fileObject);
                     }
@@ -77,7 +77,7 @@ public class FileMonitor {
         }
     }
 
-    private static File createFileObject(String fileName) {
+    private static MyFile createFileObject(String fileName) {
         String extension = getExtension(fileName);
         if (extension.equals("txt")) {
             return new TextFile(fileName);
@@ -98,20 +98,14 @@ public class FileMonitor {
     }
 
     private static void updateFilesData() {
-        for (File file : files) {
-            if (file instanceof TextFile) {
-                ((TextFile) file).updateTextFileData();
-            } else if (file instanceof ImageFile) {
-                ((ImageFile) file).updateImageFileData();
-            } else if (file instanceof ProgramFile) {
-                ((ProgramFile) file).updateProgramFileData();
-            }
+        for (MyFile file : files) {
+            // You can call common methods here
         }
     }
 
     private static void displayFileInfo(String filename) {
-        for (File file : files) {
-            if (file.fileName.equals(filename)) {
+        for (MyFile file : files) {
+            if (file.getFileName().equals(filename)) {
                 System.out.println(file.getInfo());
                 return;
             }
@@ -121,11 +115,9 @@ public class FileMonitor {
 
     private static void displayFileStatus() {
         System.out.println("File status since snapshot time: " + snapshotTime);
-        for (File file : files) {
+        for (MyFile file : files) {
             String status = file.hasChanged(snapshotTime) ? "Changed" : "No changes";
-            System.out.println(file.fileName + " - " + status);
+            System.out.println(file.getFileName() + " - " + status);
         }
     }
-
-
 }
