@@ -6,7 +6,7 @@ public interface MyFile {
     String getFileName();
     String getInfo();
     boolean hasChanged(Date snapshotTime);
-    void update();
+//    void update();
 
 }
 

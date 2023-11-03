@@ -21,9 +21,9 @@ abstract class File implements MyFile {
         this.updatedDate = getModificationDate(fileName);
     }
 
-    public void update() {
-        this.updatedDate = new Date();
-    }
+//    public void update() {
+//        this.updatedDate = new Date();
+//    }
 
     public abstract String getInfo();
 

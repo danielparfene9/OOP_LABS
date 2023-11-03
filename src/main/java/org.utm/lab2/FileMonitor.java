@@ -35,7 +35,6 @@ public class FileMonitor {
 
                 snapshotTime = new Date();
                 System.out.println("Snapshot time updated to: " + snapshotTime);
-                updateFilesData();
 
             } else if (choice.startsWith("info")) {
                 String[] parts = choice.split(" ");
@@ -109,12 +108,11 @@ public class FileMonitor {
         return "";
     }
 
-    private static void updateFilesData() {
-        for (MyFile file : files) {
-            file.update();
-
-        }
-    }
+//    private static void updateFilesData() {
+//        for (MyFile file : files) {
+//            file.update();
+//        }
+//    }
 
     private static void displayFileInfo(String filename) {
         for (MyFile file : files) {
@@ -141,7 +139,9 @@ public class FileMonitor {
         public void run(){
 
             System.out.println("\n Updating file timestamps...");
-            for (MyFile file : files) file.update();
+            files = new ArrayList<>();
+            String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS\\";
+            populateFileList(folderLocation);
 
         }
     }
