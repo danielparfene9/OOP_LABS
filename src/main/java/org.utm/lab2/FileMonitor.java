@@ -130,10 +130,20 @@ public class FileMonitor {
     private static void displayFileStatus() {
         System.out.println("File status since snapshot time: " + snapshotTime);
         for (MyFile file : files) {
-            String status = file.hasChanged(snapshotTime) ? "Changed" : "No changes";
+            String status;
+            if (file.hasChanged(snapshotTime)){
+
+                status = "Changed";
+            } else if (!previousFiles.contains(file)){
+
+                status = "Added";
+            } else if (!files.contains(file)){
+
+                status = "Deleted";
+            } else status = "No Changes";
+
             System.out.println(file.getFileName() + " - " + status);
-            if (!previousFiles.contains(file)) System.out.println(file.getFileName() + " - " + "Added");
-            else if (!files.contains(file)) System.out.println(file.getFileName() + " - " + "Deleted");
+
         }
 
     }
