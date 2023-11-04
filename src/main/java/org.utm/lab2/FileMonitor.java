@@ -6,11 +6,13 @@ import java.util.*;
 public class FileMonitor {
     private static Date snapshotTime;
     private static List<MyFile> files;
+    private static List<MyFile> previousFiles;
     private static Timer timer;
 
     public static void main(String[] args) {
         snapshotTime = new Date();
         files = new ArrayList<>();
+        previousFiles = new ArrayList<>();
 
         String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS\\";
 
@@ -82,6 +84,7 @@ public class FileMonitor {
                     MyFile fileObject = createFileObject(fileName);
                     if (fileObject != null) {
                         files.add(fileObject);
+                        previousFiles.add(fileObject);
                     }
                 }
             }
@@ -129,11 +132,14 @@ public class FileMonitor {
         for (MyFile file : files) {
             String status = file.hasChanged(snapshotTime) ? "Changed" : "No changes";
             System.out.println(file.getFileName() + " - " + status);
+            if (!previousFiles.contains(file)) System.out.println(file.getFileName() + " - " + "Added");
+            else if (!files.contains(file)) System.out.println(file.getFileName() + " - " + "Deleted");
         }
 
     }
 
     static class FileUpdateTask extends TimerTask {
+
 
         @Override
         public void run(){
@@ -142,6 +148,12 @@ public class FileMonitor {
             files = new ArrayList<>();
             String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS\\";
             populateFileList(folderLocation);
+            displayFileStatus();
+            System.out.println("\n You can still enter a valid command: " +
+                    "\n Commit" +
+                    "\n info <file>" +
+                    "\n status" +
+                    "\n or exit:");
 
         }
     }
