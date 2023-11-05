@@ -3,6 +3,7 @@ package org.utm.lab2;
 import java.io.File;
 import java.util.*;
 
+
 public class FileMonitor {
     private static Date snapshotTime;
     private static List<MyFile> files;
@@ -84,7 +85,6 @@ public class FileMonitor {
                     MyFile fileObject = createFileObject(fileName);
                     if (fileObject != null) {
                         files.add(fileObject);
-                        previousFiles.add(fileObject);
                     }
                 }
             }
@@ -131,16 +131,14 @@ public class FileMonitor {
         System.out.println("File status since snapshot time: " + snapshotTime);
         for (MyFile file : files) {
             String status;
-            if (file.hasChanged(snapshotTime)){
 
-                status = "Changed";
-            } else if (!previousFiles.contains(file)){
+            if (!previousFiles.contains(file)){
+                if (file.hasChanged(snapshotTime)){
 
-                status = "Added";
-            } else if (!files.contains(file)){
+                    status = "Changed";
+                } else status = "No Changes";
 
-                status = "Deleted";
-            } else status = "No Changes";
+            } else status = "Added";
 
             System.out.println(file.getFileName() + " - " + status);
 
@@ -155,6 +153,9 @@ public class FileMonitor {
         public void run(){
 
             System.out.println("\n Updating file timestamps...");
+
+            previousFiles = new ArrayList<>(files);
+
             files = new ArrayList<>();
             String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS\\";
             populateFileList(folderLocation);
