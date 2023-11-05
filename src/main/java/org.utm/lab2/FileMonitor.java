@@ -2,6 +2,7 @@ package org.utm.lab2;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class FileMonitor {
@@ -18,9 +19,10 @@ public class FileMonitor {
         String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS\\";
 
         populateFileList(folderLocation);
+        previousFiles.addAll(files);
 
         timer = new Timer();
-        timer.schedule(new FileUpdateTask(), 0, 60*1000);
+        timer.schedule(new FileUpdateTask(), 0, 15 * 1000);
 
         Scanner scanner = new Scanner(System.in);
 
@@ -79,6 +81,7 @@ public class FileMonitor {
 
         File[] filesInFolder = folder.listFiles();
         if (filesInFolder != null) {
+            files.clear();
             for (File file : filesInFolder) {
                 if (file.isFile()) {
                     String fileName = file.getName();
@@ -129,19 +132,38 @@ public class FileMonitor {
 
     private static void displayFileStatus() {
         System.out.println("File status since snapshot time: " + snapshotTime);
+
         for (MyFile file : files) {
             String status;
 
-            if (!previousFiles.contains(file)){
-                if (file.hasChanged(snapshotTime)){
+            if (file.hasChanged(snapshotTime)) {
 
-                    status = "Changed";
-                } else status = "No Changes";
-
-            } else status = "Added";
+                status = "Changed";
+            } else status = "No Changes";
 
             System.out.println(file.getFileName() + " - " + status);
 
+        }
+
+        List<String> addedFiles = files.stream()
+                .map(MyFile::getFileName)
+                .filter(fileName -> previousFiles.stream().noneMatch(prevFile -> prevFile.getFileName().equals(fileName)))
+                .collect(Collectors.toList());
+
+
+        List<String> deletedFiles = previousFiles.stream()
+                .map(MyFile::getFileName)
+                .filter(fileName -> files.stream().noneMatch(currentFile -> currentFile.getFileName().equals(fileName)))
+                .collect(Collectors.toList());
+
+        if (!addedFiles.isEmpty()) {
+            System.out.println("Added Files:\n");
+            addedFiles.forEach(System.out::println);
+        }
+
+        if (!deletedFiles.isEmpty()) {
+            System.out.println("Deleted Files:\n");
+            deletedFiles.forEach(System.out::println);
         }
 
     }
@@ -150,21 +172,21 @@ public class FileMonitor {
 
 
         @Override
-        public void run(){
+        public void run() {
 
-            System.out.println("\n Updating file timestamps...");
+            System.out.println("Updating file timestamps...\n");
 
-            previousFiles = new ArrayList<>(files);
+            previousFiles.clear();
+            previousFiles.addAll(files);
 
-            files = new ArrayList<>();
             String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS\\";
             populateFileList(folderLocation);
             displayFileStatus();
-            System.out.println("\n You can still enter a valid command: " +
-                    "\n Commit" +
-                    "\n info <file>" +
-                    "\n status" +
-                    "\n or exit:");
+            System.out.println("You can still enter a valid command: \n" +
+                    "Commit\n" +
+                    "info <file>\n" +
+                    "status\n" +
+                    "or exit:");
 
         }
     }
