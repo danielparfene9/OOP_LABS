@@ -1,6 +1,7 @@
 package org.utm.lab2;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,7 +12,7 @@ public class FileMonitor {
     private static List<MyFile> previousFiles;
     private static Timer timer;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         snapshotTime = new Date();
         files = new ArrayList<>();
@@ -75,7 +76,7 @@ public class FileMonitor {
         scanner.close();
     }
 
-    private static void populateFileList(String folderLocation) {
+    private static void populateFileList(String folderLocation) throws IOException {
 
         File folder = new File(folderLocation);
 
@@ -106,7 +107,7 @@ public class FileMonitor {
         }
     }
 
-    private static MyFile createFileObject(String fileName) {
+    private static MyFile createFileObject(String fileName) throws IOException {
 
         String extension = getExtension(fileName);
 
@@ -200,7 +201,11 @@ public class FileMonitor {
 
             String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS\\";
 
-            populateFileList(folderLocation);
+            try {
+                populateFileList(folderLocation);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             displayFileStatus();
 
             System.out.println("You can still enter a valid command: \n" +
