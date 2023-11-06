@@ -9,12 +9,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 abstract class File implements MyFile {
+
     protected String fileName;
     protected String extension;
     protected Date createdDate;
     protected Date updatedDate;
 
     public File(String fileName) {
+
         this.fileName = fileName;
         this.extension = getExtension(fileName);
         this.createdDate = getCreationDate(fileName);
@@ -35,7 +37,9 @@ abstract class File implements MyFile {
     }
 
     private String getExtension(String fileName) {
+
         int dotIndex = fileName.lastIndexOf('.');
+
         if (dotIndex != -1) {
             return fileName.substring(dotIndex + 1);
         }
@@ -43,11 +47,14 @@ abstract class File implements MyFile {
     }
 
     private Date getCreationDate(String fileName) {
+
         Path path = FileSystems.getDefault().getPath(fileName);
+
         try {
             BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
             FileTime creationTime = attributes.creationTime();
             return new Date(creationTime.toMillis());
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -55,11 +62,14 @@ abstract class File implements MyFile {
     }
 
     private Date getModificationDate(String fileName) {
+
         Path path = FileSystems.getDefault().getPath(fileName);
+
         try {
             BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
             FileTime modificationTime = attributes.lastModifiedTime();
             return new Date(modificationTime.toMillis());
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;

@@ -12,6 +12,7 @@ public class FileMonitor {
     private static Timer timer;
 
     public static void main(String[] args) {
+
         snapshotTime = new Date();
         files = new ArrayList<>();
         previousFiles = new ArrayList<>();
@@ -27,6 +28,7 @@ public class FileMonitor {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+
             System.out.println("Options:");
             System.out.println("1. commit - Update snapshot time");
             System.out.println("2. info <filename> - Get file information");
@@ -42,9 +44,11 @@ public class FileMonitor {
                 System.out.println("Snapshot time updated to: " + snapshotTime);
 
             } else if (choice.startsWith("info")) {
+
                 String[] parts = choice.split(" ");
 
                 if (parts.length == 2) {
+
                     String filename = parts[1];
                     displayFileInfo(filename);
 
@@ -55,11 +59,13 @@ public class FileMonitor {
             } else if (choice.equals("status")) {
 
                 displayFileStatus();
+
             } else if (choice.equals("exit")) {
 
                 System.out.println("Exiting the program.");
                 timer.cancel();
                 break;
+
             } else {
 
                 System.out.println("Invalid command. Please enter a valid option.");
@@ -74,19 +80,25 @@ public class FileMonitor {
         File folder = new File(folderLocation);
 
         if (!folder.exists() || !folder.isDirectory()) {
+
             System.out.println("Invalid folder location: " + folderLocation);
             return;
 
         }
 
         File[] filesInFolder = folder.listFiles();
+
         if (filesInFolder != null) {
             files.clear();
+
             for (File file : filesInFolder) {
                 if (file.isFile()) {
+
                     String fileName = file.getName();
                     MyFile fileObject = createFileObject(fileName);
+
                     if (fileObject != null) {
+
                         files.add(fileObject);
                     }
                 }
@@ -95,11 +107,15 @@ public class FileMonitor {
     }
 
     private static MyFile createFileObject(String fileName) {
+
         String extension = getExtension(fileName);
+
         if (extension.equals("txt")) {
             return new TextFile(fileName);
+
         } else if (extension.equals("png") || extension.equals("jpg")) {
             return new ImageFile(fileName);
+
         } else if (extension.equals("py") || extension.equals("java")) {
             return new ProgramFile(fileName);
         }
@@ -107,7 +123,9 @@ public class FileMonitor {
     }
 
     private static String getExtension(String fileName) {
+
         int dotIndex = fileName.lastIndexOf('.');
+
         if (dotIndex != -1) {
             return fileName.substring(dotIndex + 1);
         }
@@ -121,8 +139,10 @@ public class FileMonitor {
 //    }
 
     private static void displayFileInfo(String filename) {
+
         for (MyFile file : files) {
             if (file.getFileName().equals(filename)) {
+
                 System.out.println(file.getInfo());
                 return;
             }
@@ -132,18 +152,6 @@ public class FileMonitor {
 
     private static void displayFileStatus() {
         System.out.println("File status since snapshot time: " + snapshotTime);
-
-        for (MyFile file : files) {
-            String status;
-
-            if (file.hasChanged(snapshotTime)) {
-
-                status = "Changed";
-            } else status = "No Changes";
-
-            System.out.println(file.getFileName() + " - " + status);
-
-        }
 
         List<String> addedFiles = files.stream()
                 .map(MyFile::getFileName)
@@ -156,14 +164,25 @@ public class FileMonitor {
                 .filter(fileName -> files.stream().noneMatch(currentFile -> currentFile.getFileName().equals(fileName)))
                 .collect(Collectors.toList());
 
-        if (!addedFiles.isEmpty()) {
-            System.out.println("Added Files:\n");
-            addedFiles.forEach(System.out::println);
+        for (MyFile file : files) {
+            String status;
+
+            if (file.hasChanged(snapshotTime)) {
+
+                status = "Changed";
+            } else status = "No Changes";
+
+
+            System.out.println(file.getFileName() + " - " + status);
+
         }
 
-        if (!deletedFiles.isEmpty()) {
-            System.out.println("Deleted Files:\n");
-            deletedFiles.forEach(System.out::println);
+        for (String addedFile : addedFiles) {
+            System.out.println(addedFile + " - Added");
+        }
+
+        for (String deletedFile : deletedFiles) {
+            System.out.println(deletedFile + " - Deleted");
         }
 
     }
@@ -180,8 +199,10 @@ public class FileMonitor {
             previousFiles.addAll(files);
 
             String folderLocation = "C:\\Users\\danie\\Documents\\GitHub\\OOP_LABS\\";
+
             populateFileList(folderLocation);
             displayFileStatus();
+
             System.out.println("You can still enter a valid command: \n" +
                     "Commit\n" +
                     "info <file>\n" +
