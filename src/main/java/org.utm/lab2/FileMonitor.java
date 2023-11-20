@@ -14,6 +14,7 @@ public class FileMonitor {
 
     public static void main(String[] args) throws IOException {
 
+
         snapshotTime = new Date();
         files = new ArrayList<>();
         previousFiles = new ArrayList<>();
