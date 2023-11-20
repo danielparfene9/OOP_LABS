@@ -1,4 +1,6 @@
 package org.utm.lab3;
+import java.util.EmptyStackException;
+import java.util.ArrayList;
 
 public class DynamicArrayStack<T> implements Stack<T> {
     private ArrayList<T> list;

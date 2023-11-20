@@ -1,4 +1,5 @@
 package org.utm.lab3;
+import java.util.EmptyStackException;
 
 public class LinkedListStack<T> implements Stack<T> {
     private static class Node<T> {
