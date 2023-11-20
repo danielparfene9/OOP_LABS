@@ -2,6 +2,7 @@ package org.utm.lab3;
 import java.util.EmptyStackException;
 
 public class ArrayStack<T> implements Stack<T> {
+
     private T[] array;
     private int top;
     private static final int DEFAULT_CAPACITY = 10;

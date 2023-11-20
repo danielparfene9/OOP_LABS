@@ -17,7 +17,7 @@ public class QueueTest {
 
     private static void testQueue(Queue<Integer> queue) {
         System.out.println("Testing " + queue.getClass().getSimpleName());
-        
+
         for (int i = 1; i <= 5; i++) {
             System.out.println("Enqueuing: " + i);
             queue.enqueue(i);

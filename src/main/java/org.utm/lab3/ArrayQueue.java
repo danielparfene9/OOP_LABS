@@ -2,11 +2,13 @@ package org.utm.lab3;
 import java.util.NoSuchElementException;
 
 public class ArrayQueue<T> implements Queue<T> {
+
     private T[] array;
     private int front, rear, size, capacity;
     private static final int DEFAULT_CAPACITY = 10;
 
     public ArrayQueue() {
+
         array = (T[]) new Object[DEFAULT_CAPACITY];
         front = size = 0;
         rear = capacity - 1;
